@@ -1,3 +1,88 @@
+<?php
+session_start();
+
+include('dbcon.php');
+//Delete Patients
+if(isset($_POST['delete-patients']))
+{
+    $id = $_POST['id_key'];
+
+    $ref_table = "Patients/".$id;
+
+    $deleteData = $database->getReference($ref_table)->remove();
+
+   
+}
+//edit patients from database
+if(isset($_POST['edit-patients']))
+{
+    $id = $_POST['id'];
+    $firstname = $_POST['first-name'];
+    $lastname = $_POST['last-name'];
+    $username = $_POST['user-name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $date = $_POST['date'];
+    $age = date_diff(date_create($date),date_create('Today'))->y;
+    $address = $_POST['address'];
+    $phone = $_POST['phone'];
+    $img = $_POST['img'];
+    $gender = $_POST['gender'];
+    
+    //
+    $updateData = 
+    [
+        'firstname' => $firstname,
+        'lastname' => $lastname,
+        'username' => $username,
+        'email' => $email,
+        'password' => $password,
+        'age' => $age,
+        'address' => $address,
+        'phone' => $phone,
+        'img' => $img,
+        'gender' => $gender,
+    ];
+    $ref_table = "Patients/".$id;
+    $updatequery = $database->getReference($ref_table)->update($updateData);
+
+}
+// insert data into database
+if(isset($_POST['create-patients']))
+{
+    $firstname = $_POST['first-name'];
+    $lastname = $_POST['last-name'];
+    $username = $_POST['user-name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $date = $_POST['date'];
+    $age = date_diff(date_create($date),date_create('Today'))->y;
+    $address = $_POST['address'];
+    $phone = $_POST['phone'];
+    $img = $_POST['img'];
+    $gender = $_POST['gender'];
+    
+    //
+    $postData = 
+    [
+        'firstname' => $firstname,
+        'lastname' => $lastname,
+        'username' => $username,
+        'email' => $email,
+        'password' => $password,
+        'age' => $age,
+        'address' => $address,
+        'phone' => $phone,
+        'img' => $img,
+        'gender' => $gender,
+    ];
+    $ref_table = "Patients";
+    $postRef = $database->getReference($ref_table)->push($postData);
+
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -87,7 +172,8 @@
 							<table class="table table-border table-striped custom-table datatable mb-0">
 								<thead>
 									<tr>
-										<th>Name</th>
+										<th>First Name</th>
+										<th>Last Name</th>
 										<th>Age</th>
 										<th>Address</th>
 										<th>Phone</th>
@@ -96,102 +182,46 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td><img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle m-r-5" alt=""> Jennifer Robinson</td>
-										<td>35</td>
-										<td>1545 Dorsey Ln NE, Leland, NC, 28451</td>
-										<td>(207) 808 8863</td>
-										<td>jenniferrobinson@example.com</td>
-										<td class="text-right">
-											<div class="dropdown dropdown-action">
-												<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-												<div class="dropdown-menu dropdown-menu-right">
-													<a class="dropdown-item" href="edit-patient.php"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-													<a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle m-r-5" alt=""> Terry Baker</td>
-										<td>63</td>
-										<td>555 Front St #APT 2H, Hempstead, NY, 11550</td>
-										<td>(376) 150 6975</td>
-										<td>terrybaker@example.com</td>
-										<td class="text-right">
-											<div class="dropdown dropdown-action">
-												<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-												<div class="dropdown-menu dropdown-menu-right">
-													<a class="dropdown-item" href="edit-patient.php"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-													<a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle m-r-5" alt=""> Kyle Bowman</td>
-										<td>7</td>
-										<td>5060 Fairways Cir #APT 207, Vero Beach, FL, 32967</td>
-										<td>(981) 756 6128</td>
-										<td>kylebowman@example.com</td>
-										<td class="text-right">
-											<div class="dropdown dropdown-action">
-												<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-												<div class="dropdown-menu dropdown-menu-right">
-													<a class="dropdown-item" href="edit-patient.php"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-													<a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle m-r-5" alt=""> Marie Howard</td>
-										<td>22</td>
-										<td>3501 New Haven Ave #152, Columbia, MO, 65201</td>
-										<td>(634) 09 3833</td>
-										<td>mariehoward@example.com</td>
-										<td class="text-right">
-											<div class="dropdown dropdown-action">
-												<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-												<div class="dropdown-menu dropdown-menu-right">
-													<a class="dropdown-item" href="edit-patient.php"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-													<a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle m-r-5" alt=""> Joshua Guzman</td>
-										<td>34</td>
-										<td>4712 Spring Creek Dr, Bonita Springs, FL, 34134</td>
-										<td>(407) 554 4146</td>
-										<td>joshuaguzman@example.com</td>
-										<td class="text-right">
-											<div class="dropdown dropdown-action">
-												<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-												<div class="dropdown-menu dropdown-menu-right">
-													<a class="dropdown-item" href="edit-patient.php"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-													<a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td><img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle m-r-5" alt=""> Julia Sims</td>
-										<td>27</td>
-										<td>517 Walker Dr, Houma, LA, 70364, United States</td>
-										<td>(680) 432 2662</td>
-										<td>juliasims@example.com</td>
-										<td class="text-right">
-											<div class="dropdown dropdown-action">
-												<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-												<div class="dropdown-menu dropdown-menu-right">
-													<a class="dropdown-item" href="edit-patient.php"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-													<a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-												</div>
-											</div>
-										</td>
-									</tr>
+									<?php
+									include('dbcon.php');
+
+									$ref_table = "Patients";
+									$fetchdata = $database->getReference($ref_table)->getValue();
+
+									if($fetchdata > 0)
+									{
+										foreach($fetchdata as $key => $row)
+										{
+											?>
+											<tr>
+												<td><?= $row['firstname']; ?></td>
+												<td><?= $row['lastname']; ?></td>
+												<td><?= $row['age']; ?></td>
+												<td><?= $row['address']; ?></td>
+												<td><?= $row['phone']; ?></td>
+												<td><?= $row['email']; ?></td>
+												<td class="text-right">
+													<div class="dropdown dropdown-action">
+														<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+														<div class="dropdown-menu dropdown-menu-right">
+															<a class="dropdown-item" href="edit-patient.php?id=<?=$key;?>"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+															<a class="dropdown-item" href="#delete-patients" data-toggle="modal" data-target="#delete_patient"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+														</div>
+													</div>
+												</td>
+									        </tr>
+									        <?php
+										}
+									}
+									else
+									{
+										?>
+										<tr>
+											<td clspan = "10"> no record found </td>
+										</tr>
+										<?php
+									}
+								?>  
 								</tbody>
 							</table>
 						</div>
@@ -199,6 +229,7 @@
                 </div>
             </div>
         </div>
+        <form action="patients.php" method="POST" id="delete-patients">
 		<div id="delete_patient" class="modal fade delete-modal" role="dialog">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
@@ -206,13 +237,15 @@
 						<img src="assets/img/sent.png" alt="" width="50" height="46">
 						<h3>Are you sure want to delete this Patient?</h3>
 						<div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
-							<button type="submit" class="btn btn-danger">Delete</button>
+                            <input type="hidden" name="id_key" value="<?=$key?>" />
+							<button type="submit" name="delete-patients" class="btn btn-danger">Delete</button>
 						</div>
 					</div>
 				</div>
 			</div>
 			
 		</div>
+        </form>
     </div>
     <div class="sidebar-overlay" data-reff=""></div>
     <script src="assets/js/jquery-3.2.1.min.js"></script>

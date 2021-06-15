@@ -1,3 +1,16 @@
+<?php 
+
+    include('dbcon.php');
+    session_start();
+    //for checking cnnection of database
+    /*$reference = $database->getReference('Doctors');
+    echo "<h1>".$reference->getValue()."</h1>";*/
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -78,7 +91,15 @@
                         <div class="dash-widget">
 							<span class="dash-widget-bg1"><i class="fa fa-stethoscope" aria-hidden="true"></i></span>
 							<div class="dash-widget-info text-right">
-								<h3>98</h3>
+								<h3>
+                                <?php
+                                        include('dbcon.php');
+                                        $ref_table = "Doctors";
+                                        $totalNumOfDoctors = $database->getReference($ref_table)->getSnapshot()->numChildren();
+                                        echo $totalNumOfDoctors;
+                                    
+                                    ?>
+                                </h3>
 								<span class="widget-title1">Doctors <i class="fa fa-check" aria-hidden="true"></i></span>
 							</div>
                         </div>
@@ -87,7 +108,15 @@
                         <div class="dash-widget">
                             <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
                             <div class="dash-widget-info text-right">
-                                <h3>1072</h3>
+                                <h3>
+                                    <?php
+                                        include('dbcon.php');
+                                        $ref_table = "Patients";
+                                        $totalNumOfPatients = $database->getReference($ref_table)->getSnapshot()->numChildren();
+                                        echo $totalNumOfPatients;
+                                    
+                                    ?>
+                                </h3>
                                 <span class="widget-title2">Patients <i class="fa fa-check" aria-hidden="true"></i></span>
                             </div>
                         </div>
@@ -215,32 +244,5 @@
     <script src="assets/js/Chart.bundle.js"></script>
     <script src="assets/js/chart.js"></script>
     <script src="assets/js/app.js"></script>
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-analytics.js"></script>
-
-<script>
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  var firebaseConfig = {
-    apiKey: "AIzaSyBle3D-9nO5-Bz31bI50vdrA3FAQGXDB2A",
-    authDomain: "app-project-f631e.firebaseapp.com",
-    databaseURL: "https://app-project-f631e-default-rtdb.firebaseio.com",
-    projectId: "app-project-f631e",
-    storageBucket: "app-project-f631e.appspot.com",
-    messagingSenderId: "1070909495191",
-    appId: "1:1070909495191:web:0887a3806b4658a92756d2",
-    measurementId: "G-6VDW8FHK1P"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-</script>
 </body>
-
-
-<!-- index22:59-->
 </html>

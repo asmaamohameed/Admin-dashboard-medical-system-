@@ -1,3 +1,63 @@
+<?php
+
+session_start();
+include('dbcon.php');
+
+if(isset($_POST['login']))
+{
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    try
+     {
+        $user = $auth->getUserByEmail("$email");
+
+        $signInResult = $auth->signInWithEmailAndPassword($email, $password);
+        $idTokenString = $signInResult->idToken();
+
+        try {
+            $verifiedIdToken = $auth->verifyIdToken($idTokenString);
+            $uid = $verifiedIdToken->claims()->get('sub');
+
+            $_SESSION['verified_user_id'] = $uid;
+            $_SESSION['idTokenString'] = $idTokenString;
+
+            $_SESSION['status'] = "You Are Logged In Successfully";
+            header('Location: index.php');
+            exit();
+
+
+        } catch (InvalidToken $e) {
+            echo 'The token is invalid: '.$e->getMessage();
+        } catch (\InvalidArgumentException $e) {
+            echo 'The token could not be parsed: '.$e->getMessage();
+        }
+
+     }
+    catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e)
+     {
+       // echo $e->getMessage();
+       $_SESSION['status'] = "No Email Found";
+       header('Location: login.php');
+       exit();
+     }
+}
+
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,21 +82,30 @@
         <div class="account-page">
 			<div class="account-center">
 				<div class="account-box">
-                    <form action="index.php" class="form-signin">
+                <?php
+                    if(isset($_SESSION['status']))
+                    {
+                        echo "<h4 class='alert alert-success'>".$_SESSION['status']."</h4>";
+                        unset($_SESSION['status']);
+                    }
+                
+                
+                ?>
+                    <form action="index.php" method="POST" class="form-signin">
 						<div class="account-logo">
                             <a href="index.php"><img src="assets/img/logo web.png" alt=""></a>
                         </div>
                         <div class="form-group">
-                            <label>Username or Email</label>
-                            <input type="text" autofocus="" class="form-control">
+                            <label>Email</label>
+                            <input type="text" name="email" autofocus="" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" class="form-control">
+                            <input type="password" name="password" class="form-control">
                         </div>
                         
                         <div class="form-group text-center">
-                            <button type="submit" class="btn btn-primary account-btn">Login</button>
+                            <button type="submit" name="login" class="btn btn-primary account-btn">Login</button>
                         </div>
                         <div class="form-group text-center">
                             <a href="forgot-password.php">Forgot your password?</a>

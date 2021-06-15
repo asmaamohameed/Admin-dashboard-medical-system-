@@ -79,88 +79,64 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-8 offset-lg-2">
-                        <form>
+                    <!--php code for edit and update-->
+                    <?php
+
+                        include('dbcon.php');
+                        $ref_table = "Patients";
+                        $id = $_GET['id'];
+                        $editdata = $database->getReference($ref_table)->getChild($id)->getValue();
+
+
+
+                   ?>
+                        <form action="patients.php" method="POST">
+                        <input type="hidden" name="id" value="<?=$id?>"/>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>First Name <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" value="Terry">
+                                        <input class="form-control" type="text" name="first-name" value="<?=$editdata['firstname'];?>">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Last Name</label>
-                                        <input class="form-control" type="text" value="Baker">
+                                        <input class="form-control" type="text" name="last-name" value="<?=$editdata['lastname'];?>">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Username <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" value="terrybaker">
+                                        <input class="form-control" type="text" name="user-name" value="<?=$editdata['username'];?>">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Email <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="email" value="terrybaker@example.com">
+                                        <input class="form-control" type="email" name="email" value="<?=$editdata['email'];?>">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Password</label>
-                                        <input class="form-control" type="password">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Confirm Password</label>
-                                        <input class="form-control" type="password">
+                                        <input class="form-control" type="password" name="password" value="<?=$editdata['password'];?>">
                                     </div>
                                 </div>
 								<div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Date of Birth</label>
                                         <div class="cal-icon">
-                                            <input type="text" class="form-control datetimepicker">
+                                            <input type="text" class="form-control datetimepicker" name="age" value="<?=$editdata['age'];?>">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
-									<div class="form-group gender-select">
-										<label class="gen-label">Gender:</label>
-										<div class="form-check-inline">
-											<label class="form-check-label">
-												<input type="radio" name="gender" class="form-check-input" checked>Male
-											</label>
-										</div>
-										<div class="form-check-inline">
-											<label class="form-check-label">
-												<input type="radio" name="gender" class="form-check-input">Female
-											</label>
-										</div>
-									</div>
                                 </div>
 								<div class="col-sm-12">
 									<div class="row">
 										<div class="col-sm-12">
 											<div class="form-group">
 												<label>Address</label>
-												<input type="text" class="form-control" value="555 Front St #APT 2H, Hempstead">
-											</div>
-										</div>
-										<div class="col-sm-6 col-md-6 col-lg-3">
-											<div class="form-group">
-												<label>Country</label>
-												<select class="form-control select">
-													<option selected>USA</option>
-													<option>United Kingdom</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-sm-6 col-md-6 col-lg-3">
-											<div class="form-group">
-												<label>City</label>
-												<input type="text" class="form-control">
+												<input type="text" class="form-control" name="address" value="<?=$editdata['address'];?>">
 											</div>
 										</div>
 									</div>
@@ -168,7 +144,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Phone </label>
-                                        <input class="form-control" type="text" value="3761506975">
+                                        <input class="form-control" type="text" name="phone" value="<?=$editdata['phone'];?>">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -179,29 +155,29 @@
 												<img alt="" src="assets/img/user.jpg">
 											</div>
 											<div class="upload-input">
-												<input type="file" class="form-control">
+												<input type="file" class="form-control" name="img" value="<?=$editdata['img'];?>">
 											</div>
 										</div>
 									</div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="display-block">Status</label>
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" name="status" id="product_active" value="option1" checked>
-									<label class="form-check-label" for="product_active">
-									Active
-									</label>
-								</div>
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" name="status" id="product_inactive" value="option2">
-									<label class="form-check-label" for="product_inactive">
-									Inactive
-									</label>
-								</div>
+                                <div class="col-sm-6">
+									<div class="form-group gender-select">
+										<label class="gen-label">Gender:</label>
+										<div class="form-check-inline">
+											<label class="form-check-label">
+												<input type="radio" name="gender" value="<?=$editdata['gender'];?>" class="form-check-input" checked>Male
+											</label>
+										</div>
+										<div class="form-check-inline">
+											<label class="form-check-label">
+												<input type="radio" name="gender" value="<?=$editdata['gender'];?>" class="form-check-input">Female
+											</label>
+										</div>
+									</div>
+                                </div>
                             </div>
                             <div class="m-t-20 text-center">
-                                <button class="btn btn-primary submit-btn">Save</button>
+                                <button class="btn btn-primary submit-btn" type="submit" name="edit-patients">Save</button>
                             </div>
                         </form>
                     </div>
